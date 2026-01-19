@@ -1,327 +1,698 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Final Fantasy - Buon Compleanno!</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz Final Fantasy - Buon Compleanno!</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+            body {
+                font-family: "Courier New", monospace;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                color: #fff;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
 
-        .container {
-            max-width: 700px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-        }
+            .container {
+                max-width: 700px;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 20px;
+                padding: 40px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                backdrop-filter: blur(10px);
+            }
 
-        h1 {
-            text-align: center;
-            color: #ffd700;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
+            /* Schermata codice iniziale */
+            .code-screen {
+                text-align: center;
+            }
 
-        .question-box {
-            display: none;
-        }
+            .code-screen.hidden {
+                display: none;
+            }
 
-        .question-box.active {
-            display: block;
-        }
+            .code-screen h1 {
+                font-size: 1.2em;
+                letter-spacing: 3px;
+                margin-bottom: 40px;
+                color: #9fff9f;
+                text-shadow: 0 0 10px #9fff9f;
+            }
 
-        .question {
-            font-size: 1.3em;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
+            .code-input {
+                background: #0f0f0f;
+                border: 3px solid #9fff9f;
+                color: #9fff9f;
+                padding: 15px 20px;
+                font-size: 1.5em;
+                font-family: "Courier New", monospace;
+                text-align: center;
+                letter-spacing: 5px;
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 20px;
+            }
 
-        .image-container {
-            text-align: center;
-            margin: 25px 0;
-        }
+            .code-input:focus {
+                outline: none;
+                box-shadow: 0 0 20px #9fff9f;
+            }
 
-        .image-container img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
+            .code-error {
+                color: #ff4444;
+                margin-top: 10px;
+                font-size: 0.9em;
+                min-height: 20px;
+            }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+            .access-btn {
+                background: #0f0f0f;
+                border: 3px solid #9fff9f;
+                color: #9fff9f;
+                padding: 12px 40px;
+                font-size: 1.1em;
+                font-family: "Courier New", monospace;
+                cursor: pointer;
+                margin-top: 20px;
+                transition: all 0.3s;
+            }
 
-        .option-btn {
-            background: rgba(255, 215, 0, 0.2);
-            border: 2px solid #ffd700;
-            color: #fff;
-            padding: 15px 25px;
-            font-size: 1.1em;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-        }
+            .access-btn:hover {
+                background: #9fff9f;
+                color: #0f0f0f;
+            }
 
-        .option-btn:hover {
-            background: rgba(255, 215, 0, 0.4);
-            transform: translateX(5px);
-        }
+            /* Loading screen stile Game Boy */
+            .loading-screen {
+                display: none;
+                text-align: center;
+            }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
+            .loading-screen.show {
+                display: block;
+            }
 
-        .modal.show {
-            display: flex;
-        }
+            .gb-screen {
+                background: #9bbc0f;
+                border: 8px solid #8b956d;
+                border-radius: 5px;
+                padding: 30px;
+                max-width: 400px;
+                margin: 0 auto;
+                box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+            }
 
-        .modal-content {
-            background: #1a1a2e;
-            padding: 40px;
-            border-radius: 15px;
-            text-align: center;
-            border: 3px solid #ff4444;
-            max-width: 400px;
-        }
+            .loading-text {
+                color: #0f380f;
+                font-size: 1.2em;
+                margin-bottom: 30px;
+                font-weight: bold;
+            }
 
-        .modal-content h2 {
-            color: #ff4444;
-            margin-bottom: 20px;
-        }
+            .progress-container {
+                background: #0f380f;
+                height: 30px;
+                border-radius: 3px;
+                overflow: hidden;
+                border: 2px solid #0f380f;
+            }
 
-        .modal-btn {
-            background: #ffd700;
-            color: #1a1a2e;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1.1em;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 20px;
-            font-weight: bold;
-        }
+            .progress-bar {
+                background: #306230;
+                height: 100%;
+                width: 0%;
+                transition: width 0.3s;
+                position: relative;
+            }
 
-        .modal-btn:hover {
-            background: #ffed4e;
-        }
+            .progress-bar::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(15, 56, 15, 0.3) 10px,
+                    rgba(15, 56, 15, 0.3) 20px
+                );
+            }
 
-        .congrats {
-            display: none;
-            text-align: center;
-        }
+            h1 {
+                text-align: center;
+                color: #ffd700;
+                margin-bottom: 30px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+                font-family: "Arial", sans-serif;
+            }
 
-        .congrats.show {
-            display: block;
-        }
+            .question-box {
+                display: none;
+            }
 
-        .congrats h1 {
-            font-size: 2.5em;
-            margin-bottom: 20px;
-            animation: glow 2s infinite;
-        }
+            .question-box.active {
+                display: block;
+            }
 
-        .congrats p {
-            font-size: 1.3em;
-            line-height: 1.8;
-        }
+            .question {
+                font-size: 1.3em;
+                margin-bottom: 25px;
+                line-height: 1.6;
+                font-family: "Arial", sans-serif;
+            }
 
-        @keyframes glow {
-            0%, 100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700; }
-            50% { text-shadow: 0 0 30px #ffd700, 0 0 40px #ffd700, 0 0 50px #ffd700; }
-        }
+            .image-container {
+                text-align: center;
+                margin: 25px 0;
+            }
 
-        audio {
-            width: 100%;
-            margin: 20px 0;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🎮 Quiz Final Fantasy 🎮</h1>
+            .image-container img {
+                max-width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            }
 
-        <!-- Domanda 1 -->
-        <div class="question-box active" id="q1">
-            <div class="question">
-                <strong>Domanda 1:</strong> Vero o Falso: I quattro Guerrieri della Luce all'inizio del gioco devono riaccendere i quattro cristalli elementali.
+            .options {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .option-btn {
+                background: rgba(255, 215, 0, 0.2);
+                border: 2px solid #ffd700;
+                color: #fff;
+                padding: 15px 25px;
+                font-size: 1.1em;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.3s;
+                text-align: left;
+                font-family: "Arial", sans-serif;
+            }
+
+            .option-btn:hover {
+                background: rgba(255, 215, 0, 0.4);
+                transform: translateX(5px);
+            }
+
+            .modal {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .modal.show {
+                display: flex;
+            }
+
+            .modal-content {
+                background: #1a1a2e;
+                padding: 40px;
+                border-radius: 15px;
+                text-align: center;
+                border: 3px solid #ff4444;
+                max-width: 400px;
+            }
+
+            .modal-content h2 {
+                color: #ff4444;
+                margin-bottom: 20px;
+                font-family: "Arial", sans-serif;
+            }
+
+            .modal-btn {
+                background: #ffd700;
+                color: #1a1a2e;
+                border: none;
+                padding: 12px 30px;
+                font-size: 1.1em;
+                border-radius: 8px;
+                cursor: pointer;
+                margin-top: 20px;
+                font-weight: bold;
+                font-family: "Arial", sans-serif;
+            }
+
+            .modal-btn:hover {
+                background: #ffed4e;
+            }
+
+            .congrats {
+                display: none;
+                text-align: center;
+            }
+
+            .congrats.show {
+                display: block;
+            }
+
+            .congrats h1 {
+                font-size: 2.5em;
+                margin-bottom: 20px;
+                animation: glow 2s infinite;
+            }
+
+            .congrats p {
+                font-size: 1.3em;
+                line-height: 1.8;
+                font-family: "Arial", sans-serif;
+            }
+
+            @keyframes glow {
+                0%,
+                100% {
+                    text-shadow:
+                        0 0 20px #ffd700,
+                        0 0 30px #ffd700;
+                }
+                50% {
+                    text-shadow:
+                        0 0 30px #ffd700,
+                        0 0 40px #ffd700,
+                        0 0 50px #ffd700;
+                }
+            }
+
+            audio {
+                width: 100%;
+                margin: 20px 0;
+            }
+
+            .quiz-content {
+                display: none;
+            }
+
+            .quiz-content.show {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Schermata codice -->
+            <div class="code-screen" id="codeScreen">
+                <h1>▓▓▓ ACCESS REQUIRED ▓▓▓</h1>
+                <input
+                    type="text"
+                    class="code-input"
+                    id="codeInput"
+                    placeholder="_ _ _ _ _ _ _ _ _"
+                    maxlength="9"
+                />
+                <div class="code-error" id="codeError"></div>
+                <br />
+                <button class="access-btn" onclick="checkCode()">ACCESS</button>
             </div>
-            <div class="image-container">
-                <img src="images/FF1PR.jpg" alt="Final Fantasy I">
+
+            <!-- Schermata loading -->
+            <div class="loading-screen" id="loadingScreen">
+                <div class="gb-screen">
+                    <div class="loading-text">LOADING...</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
             </div>
-            <div class="options">
-                <button class="option-btn" onclick="checkAnswer(1, true)">Vero</button>
-                <button class="option-btn" onclick="checkAnswer(1, false)">Falso</button>
+
+            <!-- Quiz -->
+            <div class="quiz-content" id="quizContent">
+                <h1>🎮 Quiz Final Fantasy 🎮</h1>
+
+                <!-- Domanda 1 -->
+                <div class="question-box active" id="q1">
+                    <div class="question">
+                        <strong>Domanda 1:</strong> Vero o Falso: pensavi di
+                        essere il primo, ma in realtà esistono altri guerrieri
+                        della luce. Sembra debbano riaccendere più di un
+                        cristallo...
+                    </div>
+                    <div class="image-container">
+                        <img src="images/FF1PR.jpg" alt="Final Fantasy I" />
+                    </div>
+                    <div class="options">
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(1, true)"
+                        >
+                            Vero
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(1, false)"
+                        >
+                            Falso
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Domanda 2 -->
+                <div class="question-box" id="q2">
+                    <div class="question">
+                        <strong>Domanda 2:</strong> Quest'abito non ti è nuovo.
+                        Da chi viene indossato?
+                    </div>
+                    <div class="image-container">
+                        <img src="images/Firion.png" alt="Firion" />
+                    </div>
+                    <div class="options">
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(2, 'A')"
+                        >
+                            A) Cecil
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(2, 'B')"
+                        >
+                            B) Firion
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(2, 'C')"
+                        >
+                            C) Luneth
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(2, 'D')"
+                        >
+                            D) Bartz
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Domanda 3 -->
+                <div class="question-box" id="q3">
+                    <div class="question">
+                        <strong>Domanda 3:</strong> Qui ci sei già stato. Più di
+                        una volta. Molte volte. Ma non ti preoccupare, ci
+                        tornerai ancora!
+                    </div>
+                    <div class="image-container">
+                        <img
+                            src="images/crystal-tower.png"
+                            alt="Crystal Tower"
+                        />
+                    </div>
+                    <div class="options">
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(3, 'A')"
+                        >
+                            A) Alexandria
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(3, 'B')"
+                        >
+                            B) Cornelia
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(3, 'C')"
+                        >
+                            C) Castello di Lindblum
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(3, 'D')"
+                        >
+                            D) Crystal Tower
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Domanda 4 -->
+                <div class="question-box" id="q4">
+                    <div class="question">
+                        <strong>Domanda 4:</strong> E' la professione di un
+                        certo Cecil, ma ne hai incontrati tanti altri, meno
+                        famosi, e più fastidiosi.
+                    </div>
+                    <div class="image-container">
+                        <img src="images/FF4.jpg" alt="Final Fantasy IV" />
+                    </div>
+                    <div class="options">
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(4, 'A')"
+                        >
+                            A) Paladino
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(4, 'B')"
+                        >
+                            B) Cavaliere Oscuro
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(4, 'C')"
+                        >
+                            C) Monaco
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(4, 'D')"
+                        >
+                            D) Dragone
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Domanda 5 -->
+                <div class="question-box" id="q5">
+                    <div class="question">
+                        <strong>Domanda 5:</strong> Anche qui ci sei già stato,
+                        e con tutta probabilità ci tornerai. No, no, non stai
+                        viaggiando nel tempo...
+                    </div>
+                    <div class="image-container">
+                        <img src="images/FF5.jpg" alt="Final Fantasy V" />
+                    </div>
+                    <div class="options">
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(5, 'A')"
+                        >
+                            A) Matoya's Cave
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(5, 'B')"
+                        >
+                            B) Sealed Temple
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(5, 'C')"
+                        >
+                            C) The Great Gubal Library
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(5, 'D')"
+                        >
+                            D) The Sunken Temple of Qarn
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Domanda 6 -->
+                <div class="question-box" id="q6">
+                    <div class="question">
+                        <strong>Domanda 6:</strong> Questa musica l'hai già
+                        ascoltata, vero? Non puoi non sapere come si chiama.
+                    </div>
+                    <audio id="audioPlayer" controls loop>
+                        <source
+                            src="music/terras-theme.mp3"
+                            type="audio/mpeg"
+                        />
+                        <source src="music/terras_theme.ogg" type="audio/ogg" />
+                        Il tuo browser non supporta l'audio.
+                    </audio>
+                    <div class="options">
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(6, 'A')"
+                        >
+                            A) Awakening
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(6, 'B')"
+                        >
+                            B) The Unforgiven
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(6, 'C')"
+                        >
+                            C) Terra's Theme
+                        </button>
+                        <button
+                            class="option-btn"
+                            onclick="checkAnswer(6, 'D')"
+                        >
+                            D) Overture
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messaggio finale -->
+                <div class="congrats" id="congrats">
+                    <h1>🎉 CONGRATULAZIONI! 🎉</h1>
+                    <p>Hai completato il quiz Final Fantasy!</p>
+                    <p style="margin-top: 30px; font-size: 1.5em">
+                        🎂 BUON COMPLEANNO! 🎂
+                    </p>
+                    <p style="margin-top: 20px">
+                        Che la Luce dei Cristalli ti accompagni sempre! ✨
+                    </p>
+                </div>
             </div>
         </div>
 
-        <!-- Domanda 2 -->
-        <div class="question-box" id="q2">
-            <div class="question">
-                <strong>Domanda 2:</strong> Come si chiama il protagonista principale di Final Fantasy II?
-            </div>
-            <div class="image-container">
-                <img src="images/Firion.png" alt="Firion">
-            </div>
-            <div class="options">
-                <button class="option-btn" onclick="checkAnswer(2, 'A')">A) Cecil</button>
-                <button class="option-btn" onclick="checkAnswer(2, 'B')">B) Firion</button>
-                <button class="option-btn" onclick="checkAnswer(2, 'C')">C) Luneth</button>
-                <button class="option-btn" onclick="checkAnswer(2, 'D')">D) Bartz</button>
+        <!-- Modal errore -->
+        <div class="modal" id="errorModal">
+            <div class="modal-content">
+                <h2>❌ Risposta Errata!</h2>
+                <p>
+                    Riprova! Ogni vero fan di Final Fantasy conosce la risposta!
+                </p>
+                <button class="modal-btn" onclick="closeModal()">
+                    Riprova
+                </button>
             </div>
         </div>
 
-        <!-- Domanda 3 -->
-        <div class="question-box" id="q3">
-            <div class="question">
-                <strong>Domanda 3:</strong> Qual è la location nell'immagine?
-            </div>
-            <div class="image-container">
-                <img src="images/crystal-tower.png" alt="Crystal Tower">
-            </div>
-            <div class="options">
-                <button class="option-btn" onclick="checkAnswer(3, 'A')">A) Alexandria</button>
-                <button class="option-btn" onclick="checkAnswer(3, 'B')">B) Cornelia</button>
-                <button class="option-btn" onclick="checkAnswer(3, 'C')">C) Castello di Lindblum</button>
-                <button class="option-btn" onclick="checkAnswer(3, 'D')">D) Crystal Tower</button>
-            </div>
-        </div>
+        <script>
+            const answers = {
+                1: true,
+                2: "B",
+                3: "D",
+                4: "B",
+                5: "C",
+                6: "C",
+            };
 
-        <!-- Domanda 4 -->
-        <div class="question-box" id="q4">
-            <div class="question">
-                <strong>Domanda 4:</strong> Qual è la professione iniziale di Cecil, il protagonista?
-            </div>
-            <div class="image-container">
-                <img src="images/FF4.jpg" alt="Final Fantasy IV">
-            </div>
-            <div class="options">
-                <button class="option-btn" onclick="checkAnswer(4, 'A')">A) Paladino</button>
-                <button class="option-btn" onclick="checkAnswer(4, 'B')">B) Cavaliere Oscuro</button>
-                <button class="option-btn" onclick="checkAnswer(4, 'C')">C) Monaco</button>
-                <button class="option-btn" onclick="checkAnswer(4, 'D')">D) Dragone</button>
-            </div>
-        </div>
+            const correctCode = "336759867";
+            let currentQuestion = 1;
 
-        <!-- Domanda 5 -->
-        <div class="question-box" id="q5">
-            <div class="question">
-                <strong>Domanda 5:</strong> In questa squadra, chi è Bartz?
-            </div>
-            <div class="image-container">
-                <img src="images/FF5.png" alt="Final Fantasy V">
-            </div>
-            <div class="options">
-                <button class="option-btn" onclick="checkAnswer(5, 'A')">A) 1</button>
-                <button class="option-btn" onclick="checkAnswer(5, 'B')">B) 2</button>
-                <button class="option-btn" onclick="checkAnswer(5, 'C')">C) 3</button>
-                <button class="option-btn" onclick="checkAnswer(5, 'D')">D) 4</button>
-            </div>
-        </div>
+            // Controllo codice
+            function checkCode() {
+                const input = document.getElementById("codeInput").value;
+                const error = document.getElementById("codeError");
 
-        <!-- Domanda 6 -->
-        <div class="question-box" id="q6">
-            <div class="question">
-                <strong>Domanda 6:</strong> Che bella musichetta! Cosa stai ascoltando?
-            </div>
-            <audio id="audioPlayer" controls loop>
-                <source src="music/terras-theme.mp3" type="audio/mpeg">
-                Il tuo browser non supporta l'audio.
-            </audio>
-            <div class="options">
-                <button class="option-btn" onclick="checkAnswer(6, 'A')">A) Awakening</button>
-                <button class="option-btn" onclick="checkAnswer(6, 'B')">B) The Unforgiven</button>
-                <button class="option-btn" onclick="checkAnswer(6, 'C')">C) Terra's Theme</button>
-                <button class="option-btn" onclick="checkAnswer(6, 'D')">D) Overture</button>
-            </div>
-        </div>
+                if (input === correctCode) {
+                    error.textContent = "";
+                    document
+                        .getElementById("codeScreen")
+                        .classList.add("hidden");
+                    startLoading();
+                } else {
+                    error.textContent = "ACCESS DENIED";
+                    document.getElementById("codeInput").value = "";
+                }
+            }
 
-        <!-- Messaggio finale -->
-        <div class="congrats" id="congrats">
-            <h1>🎉 CONGRATULAZIONI! 🎉</h1>
-            <p>Hai completato il quiz Final Fantasy!</p>
-            <p style="margin-top: 30px; font-size: 1.5em;">🎂 BUON COMPLEANNO! 🎂</p>
-            <p style="margin-top: 20px;">Che la Luce dei Cristalli ti accompagni sempre! ✨</p>
-        </div>
-    </div>
+            // Enter per submit codice
+            document
+                .getElementById("codeInput")
+                .addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        checkCode();
+                    }
+                });
 
-    <!-- Modal errore -->
-    <div class="modal" id="errorModal">
-        <div class="modal-content">
-            <h2>❌ Risposta Errata!</h2>
-            <p>Riprova! Ogni vero fan di Final Fantasy conosce la risposta!</p>
-            <button class="modal-btn" onclick="closeModal()">Riprova</button>
-        </div>
-    </div>
+            // Animazione loading
+            function startLoading() {
+                const loadingScreen = document.getElementById("loadingScreen");
+                const progressBar = document.getElementById("progressBar");
 
-    <script>
-        const answers = {
-            1: true,
-            2: 'B',
-            3: 'D',
-            4: 'B',
-            5: 'A',
-            6: 'C'
-        };
+                loadingScreen.classList.add("show");
 
-        let currentQuestion = 1;
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 10;
+                    progressBar.style.width = progress + "%";
 
-        function checkAnswer(questionNum, answer) {
-            if (answer === answers[questionNum]) {
-                // Risposta corretta
-                document.getElementById('q' + questionNum).classList.remove('active');
-                
-                if (questionNum < 6) {
-                    // Passa alla prossima domanda
-                    currentQuestion++;
-                    document.getElementById('q' + currentQuestion).classList.add('active');
-                    
-                    // Avvia l'audio quando si arriva alla domanda 6
-                    if (currentQuestion === 6) {
-                        const audio = document.getElementById('audioPlayer');
-                        audio.play().catch(e => console.log('Autoplay bloccato, clicca play manualmente'));
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        setTimeout(() => {
+                            loadingScreen.classList.remove("show");
+                            document
+                                .getElementById("quizContent")
+                                .classList.add("show");
+                        }, 500);
+                    }
+                }, 200);
+            }
+
+            function checkAnswer(questionNum, answer) {
+                if (answer === answers[questionNum]) {
+                    // Risposta corretta
+                    document
+                        .getElementById("q" + questionNum)
+                        .classList.remove("active");
+
+                    if (questionNum < 6) {
+                        // Passa alla prossima domanda
+                        currentQuestion++;
+                        document
+                            .getElementById("q" + currentQuestion)
+                            .classList.add("active");
+
+                        // Avvia l'audio quando si arriva alla domanda 6
+                        if (currentQuestion === 6) {
+                            const audio =
+                                document.getElementById("audioPlayer");
+                            audio
+                                .play()
+                                .catch((e) =>
+                                    console.log(
+                                        "Autoplay bloccato, clicca play manualmente",
+                                    ),
+                                );
+                        }
+                    } else {
+                        // Quiz completato
+                        document
+                            .getElementById("congrats")
+                            .classList.add("show");
                     }
                 } else {
-                    // Quiz completato
-                    document.getElementById('congrats').classList.add('show');
+                    // Risposta sbagliata
+                    document.getElementById("errorModal").classList.add("show");
                 }
-            } else {
-                // Risposta sbagliata
-                document.getElementById('errorModal').classList.add('show');
             }
-        }
 
-        function closeModal() {
-            document.getElementById('errorModal').classList.remove('show');
-        }
-    </script>
-</body>
+            function closeModal() {
+                document.getElementById("errorModal").classList.remove("show");
+            }
+        </script>
+    </body>
 </html>
