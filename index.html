@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Quiz Final Fantasy - Buon Compleanno!</title>
         <style>
+            @font-face {
+                font-family: "EarlyGameBoy";
+                src: url("fonts/early-gameboy.ttf") format("truetype");
+            }
+
             * {
                 margin: 0;
                 padding: 0;
@@ -12,7 +17,7 @@
             }
 
             body {
-                font-family: "Courier New", monospace;
+                font-family: "EarlyGameBoy", "Courier New", monospace;
                 background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
                 color: #fff;
                 min-height: 100vh;
@@ -55,11 +60,11 @@
                 color: #9fff9f;
                 padding: 15px 20px;
                 font-size: 1.5em;
-                font-family: "Courier New", monospace;
+                font-family: "EarlyGameBoy", "Courier New", monospace;
                 text-align: center;
                 letter-spacing: 5px;
                 width: 100%;
-                max-width: 300px;
+                max-width: 350px;
                 margin-bottom: 20px;
             }
 
@@ -81,7 +86,7 @@
                 color: #9fff9f;
                 padding: 12px 40px;
                 font-size: 1.1em;
-                font-family: "Courier New", monospace;
+                font-family: "EarlyGameBoy", "Courier New", monospace;
                 cursor: pointer;
                 margin-top: 20px;
                 transition: all 0.3s;
@@ -152,11 +157,13 @@
             }
 
             h1 {
+                font-size: 1.8em;
+                word-break: keep-all;
+                white-space: nowrap;
                 text-align: center;
                 color: #ffd700;
                 margin-bottom: 30px;
                 text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-                font-family: "Arial", sans-serif;
             }
 
             .question-box {
@@ -171,7 +178,6 @@
                 font-size: 1.3em;
                 margin-bottom: 25px;
                 line-height: 1.6;
-                font-family: "Arial", sans-serif;
             }
 
             .image-container {
@@ -201,7 +207,7 @@
                 cursor: pointer;
                 transition: all 0.3s;
                 text-align: left;
-                font-family: "Arial", sans-serif;
+                font-family: "EarlyGameBoy", "Courier New", monospace;
             }
 
             .option-btn:hover {
@@ -238,7 +244,6 @@
             .modal-content h2 {
                 color: #ff4444;
                 margin-bottom: 20px;
-                font-family: "Arial", sans-serif;
             }
 
             .modal-btn {
@@ -251,7 +256,6 @@
                 cursor: pointer;
                 margin-top: 20px;
                 font-weight: bold;
-                font-family: "Arial", sans-serif;
             }
 
             .modal-btn:hover {
@@ -268,7 +272,9 @@
             }
 
             .congrats h1 {
-                font-size: 2.5em;
+                font-size: 2em;
+                word-break: break-word;
+                white-space: normal;
                 margin-bottom: 20px;
                 animation: glow 2s infinite;
             }
@@ -276,7 +282,6 @@
             .congrats p {
                 font-size: 1.3em;
                 line-height: 1.8;
-                font-family: "Arial", sans-serif;
             }
 
             @keyframes glow {
@@ -291,6 +296,26 @@
                         0 0 30px #ffd700,
                         0 0 40px #ffd700,
                         0 0 50px #ffd700;
+                }
+            }
+
+            /* Media query per mobile */
+            @media (max-width: 600px) {
+                h1 {
+                    font-size: 1.3em;
+                }
+
+                .congrats h1 {
+                    font-size: 1.5em;
+                }
+
+                .question {
+                    font-size: 1.1em;
+                }
+
+                .option-btn {
+                    font-size: 1em;
+                    padding: 12px 20px;
                 }
             }
 
@@ -346,8 +371,8 @@
                 <div class="question-box active" id="q1">
                     <div class="question">
                         <strong>Domanda 1:</strong> Vero o Falso: pensavi di
-                        essere il primo, ma in realtà esistono altri guerrieri
-                        della luce. Sembra debbano riaccendere più di un
+                        essere il primo, ma in realta' esistono altri guerrieri
+                        della luce. Sembra debbano riaccendere piu' di un
                         cristallo...
                     </div>
                     <div class="image-container">
@@ -372,7 +397,7 @@
                 <!-- Domanda 2 -->
                 <div class="question-box" id="q2">
                     <div class="question">
-                        <strong>Domanda 2:</strong> Quest'abito non ti è nuovo.
+                        <strong>Domanda 2:</strong> Quest'abito non ti e' nuovo.
                         Da chi viene indossato?
                     </div>
                     <div class="image-container">
@@ -383,25 +408,25 @@
                             class="option-btn"
                             onclick="checkAnswer(2, 'A')"
                         >
-                            A) Cecil
+                            Cecil
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(2, 'B')"
                         >
-                            B) Firion
+                            Firion
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(2, 'C')"
                         >
-                            C) Luneth
+                            Luneth
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(2, 'D')"
                         >
-                            D) Bartz
+                            Bartz
                         </button>
                     </div>
                 </div>
@@ -409,8 +434,8 @@
                 <!-- Domanda 3 -->
                 <div class="question-box" id="q3">
                     <div class="question">
-                        <strong>Domanda 3:</strong> Qui ci sei già stato. Più di
-                        una volta. Molte volte. Ma non ti preoccupare, ci
+                        <strong>Domanda 3:</strong> Qui ci sei gia' stato. Piu'
+                        di una volta. Molte volte. Ma non ti preoccupare, ci
                         tornerai ancora!
                     </div>
                     <div class="image-container">
@@ -424,25 +449,25 @@
                             class="option-btn"
                             onclick="checkAnswer(3, 'A')"
                         >
-                            A) Alexandria
+                            Alexandria
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(3, 'B')"
                         >
-                            B) Cornelia
+                            Cornelia
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(3, 'C')"
                         >
-                            C) Castello di Lindblum
+                            Castello di Lindblum
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(3, 'D')"
                         >
-                            D) Crystal Tower
+                            Crystal Tower
                         </button>
                     </div>
                 </div>
@@ -452,7 +477,7 @@
                     <div class="question">
                         <strong>Domanda 4:</strong> E' la professione di un
                         certo Cecil, ma ne hai incontrati tanti altri, meno
-                        famosi, e più fastidiosi.
+                        famosi, e piu' fastidiosi.
                     </div>
                     <div class="image-container">
                         <img src="images/FF4.jpg" alt="Final Fantasy IV" />
@@ -462,25 +487,25 @@
                             class="option-btn"
                             onclick="checkAnswer(4, 'A')"
                         >
-                            A) Paladino
+                            Paladino
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(4, 'B')"
                         >
-                            B) Cavaliere Oscuro
+                            Cavaliere Oscuro
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(4, 'C')"
                         >
-                            C) Monaco
+                            Monaco
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(4, 'D')"
                         >
-                            D) Dragone
+                            Dragone
                         </button>
                     </div>
                 </div>
@@ -488,8 +513,8 @@
                 <!-- Domanda 5 -->
                 <div class="question-box" id="q5">
                     <div class="question">
-                        <strong>Domanda 5:</strong> Anche qui ci sei già stato,
-                        e con tutta probabilità ci tornerai. No, no, non stai
+                        <strong>Domanda 5:</strong> Anche qui ci sei gia' stato,
+                        e con tutta probabilita' ci tornerai. No, non stai
                         viaggiando nel tempo...
                     </div>
                     <div class="image-container">
@@ -500,25 +525,25 @@
                             class="option-btn"
                             onclick="checkAnswer(5, 'A')"
                         >
-                            A) Matoya's Cave
+                            Matoya's Cave
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(5, 'B')"
                         >
-                            B) Sealed Temple
+                            Sealed Temple
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(5, 'C')"
                         >
-                            C) The Great Gubal Library
+                            The Great Gubal Library
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(5, 'D')"
                         >
-                            D) The Sunken Temple of Qarn
+                            The Sunken Temple of Qarn
                         </button>
                     </div>
                 </div>
@@ -526,7 +551,7 @@
                 <!-- Domanda 6 -->
                 <div class="question-box" id="q6">
                     <div class="question">
-                        <strong>Domanda 6:</strong> Questa musica l'hai già
+                        <strong>Domanda 6:</strong> Questa musica l'hai gia'
                         ascoltata, vero? Non puoi non sapere come si chiama.
                     </div>
                     <audio id="audioPlayer" controls loop>
@@ -541,35 +566,35 @@
                             class="option-btn"
                             onclick="checkAnswer(6, 'A')"
                         >
-                            A) Awakening
+                            Awakening
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(6, 'B')"
                         >
-                            B) The Unforgiven
+                            The Unforgiven
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(6, 'C')"
                         >
-                            C) Terra's Theme
+                            Terra's Theme
                         </button>
                         <button
                             class="option-btn"
                             onclick="checkAnswer(6, 'D')"
                         >
-                            D) Overture
+                            Overture
                         </button>
                     </div>
                 </div>
 
                 <!-- Messaggio finale -->
                 <div class="congrats" id="congrats">
-                    <h1>🎉 CONGRATULAZIONI! 🎉</h1>
+                    <h1>CONGRATULAZIONI!</h1>
                     <p>
                         Hai completato il quiz Final Fantasy! <br />
-                        Adesso puoi ricevere i tuoi regali :)
+                        Adesso puoi ricevere i tuoi regali, Kupo'!
                     </p>
                     <div class="image-container">
                         <img src="images/moguri.png" alt="Kupò!" />
@@ -587,7 +612,7 @@
         <!-- Modal errore -->
         <div class="modal" id="errorModal">
             <div class="modal-content">
-                <h2>❌ Risposta Errata!</h2>
+                <h2>> Error!</h2>
                 <p>
                     Riprova! Ogni vero fan di Final Fantasy conosce la risposta!
                 </p>
