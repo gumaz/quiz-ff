@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Final Fantasy - Buon Compleanno!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .question-box {
+            display: none;
+        }
+
+        .question-box.active {
+            display: block;
+        }
+
+        .question {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            color: #fff;
+            padding: 15px 25px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 215, 0, 0.4);
+            transform: translateX(5px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            border: 3px solid #ff4444;
+            max-width: 400px;
+        }
+
+        .modal-content h2 {
+            color: #ff4444;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            background: #ffd700;
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .modal-btn:hover {
+            background: #ffed4e;
+        }
+
+        .congrats {
+            display: none;
+            text-align: center;
+        }
+
+        .congrats.show {
+            display: block;
+        }
+
+        .congrats h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: glow 2s infinite;
+        }
+
+        .congrats p {
+            font-size: 1.3em;
+            line-height: 1.8;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700; }
+            50% { text-shadow: 0 0 30px #ffd700, 0 0 40px #ffd700, 0 0 50px #ffd700; }
+        }
+
+        audio {
+            width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Quiz Final Fantasy 🎮</h1>
+
+        <!-- Domanda 1 -->
+        <div class="question-box active" id="q1">
+            <div class="question">
+                <strong>Domanda 1:</strong> Vero o Falso: I quattro Guerrieri della Luce all'inizio del gioco devono riaccendere i quattro cristalli elementali.
+            </div>
+            <div class="image-container">
+                <img src="images/FF1PR.jpg" alt="Final Fantasy I">
+            </div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(1, true)">Vero</button>
+                <button class="option-btn" onclick="checkAnswer(1, false)">Falso</button>
+            </div>
+        </div>
+
+        <!-- Domanda 2 -->
+        <div class="question-box" id="q2">
+            <div class="question">
+                <strong>Domanda 2:</strong> Come si chiama il protagonista principale di Final Fantasy II?
+            </div>
+            <div class="image-container">
+                <img src="images/Firion.png" alt="Firion">
+            </div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(2, 'A')">A) Cecil</button>
+                <button class="option-btn" onclick="checkAnswer(2, 'B')">B) Firion</button>
+                <button class="option-btn" onclick="checkAnswer(2, 'C')">C) Luneth</button>
+                <button class="option-btn" onclick="checkAnswer(2, 'D')">D) Bartz</button>
+            </div>
+        </div>
+
+        <!-- Domanda 3 -->
+        <div class="question-box" id="q3">
+            <div class="question">
+                <strong>Domanda 3:</strong> Qual è la location nell'immagine?
+            </div>
+            <div class="image-container">
+                <img src="images/crystal-tower.png" alt="Crystal Tower">
+            </div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(3, 'A')">A) Alexandria</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'B')">B) Cornelia</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'C')">C) Castello di Lindblum</button>
+                <button class="option-btn" onclick="checkAnswer(3, 'D')">D) Crystal Tower</button>
+            </div>
+        </div>
+
+        <!-- Domanda 4 -->
+        <div class="question-box" id="q4">
+            <div class="question">
+                <strong>Domanda 4:</strong> Qual è la professione iniziale di Cecil, il protagonista?
+            </div>
+            <div class="image-container">
+                <img src="images/FF4.jpg" alt="Final Fantasy IV">
+            </div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(4, 'A')">A) Paladino</button>
+                <button class="option-btn" onclick="checkAnswer(4, 'B')">B) Cavaliere Oscuro</button>
+                <button class="option-btn" onclick="checkAnswer(4, 'C')">C) Monaco</button>
+                <button class="option-btn" onclick="checkAnswer(4, 'D')">D) Dragone</button>
+            </div>
+        </div>
+
+        <!-- Domanda 5 -->
+        <div class="question-box" id="q5">
+            <div class="question">
+                <strong>Domanda 5:</strong> In questa squadra, chi è Bartz?
+            </div>
+            <div class="image-container">
+                <img src="images/FF5.png" alt="Final Fantasy V">
+            </div>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(5, 'A')">A) 1</button>
+                <button class="option-btn" onclick="checkAnswer(5, 'B')">B) 2</button>
+                <button class="option-btn" onclick="checkAnswer(5, 'C')">C) 3</button>
+                <button class="option-btn" onclick="checkAnswer(5, 'D')">D) 4</button>
+            </div>
+        </div>
+
+        <!-- Domanda 6 -->
+        <div class="question-box" id="q6">
+            <div class="question">
+                <strong>Domanda 6:</strong> Che bella musichetta! Cosa stai ascoltando?
+            </div>
+            <audio id="audioPlayer" controls loop>
+                <source src="music/terras-theme.mp3" type="audio/mpeg">
+                Il tuo browser non supporta l'audio.
+            </audio>
+            <div class="options">
+                <button class="option-btn" onclick="checkAnswer(6, 'A')">A) Awakening</button>
+                <button class="option-btn" onclick="checkAnswer(6, 'B')">B) The Unforgiven</button>
+                <button class="option-btn" onclick="checkAnswer(6, 'C')">C) Terra's Theme</button>
+                <button class="option-btn" onclick="checkAnswer(6, 'D')">D) Overture</button>
+            </div>
+        </div>
+
+        <!-- Messaggio finale -->
+        <div class="congrats" id="congrats">
+            <h1>🎉 CONGRATULAZIONI! 🎉</h1>
+            <p>Hai completato il quiz Final Fantasy!</p>
+            <p style="margin-top: 30px; font-size: 1.5em;">🎂 BUON COMPLEANNO! 🎂</p>
+            <p style="margin-top: 20px;">Che la Luce dei Cristalli ti accompagni sempre! ✨</p>
+        </div>
+    </div>
+
+    <!-- Modal errore -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <h2>❌ Risposta Errata!</h2>
+            <p>Riprova! Ogni vero fan di Final Fantasy conosce la risposta!</p>
+            <button class="modal-btn" onclick="closeModal()">Riprova</button>
+        </div>
+    </div>
+
+    <script>
+        const answers = {
+            1: true,
+            2: 'B',
+            3: 'D',
+            4: 'B',
+            5: 'A',
+            6: 'C'
+        };
+
+        let currentQuestion = 1;
+
+        function checkAnswer(questionNum, answer) {
+            if (answer === answers[questionNum]) {
+                // Risposta corretta
+                document.getElementById('q' + questionNum).classList.remove('active');
+                
+                if (questionNum < 6) {
+                    // Passa alla prossima domanda
+                    currentQuestion++;
+                    document.getElementById('q' + currentQuestion).classList.add('active');
+                    
+                    // Avvia l'audio quando si arriva alla domanda 6
+                    if (currentQuestion === 6) {
+                        const audio = document.getElementById('audioPlayer');
+                        audio.play().catch(e => console.log('Autoplay bloccato, clicca play manualmente'));
+                    }
+                } else {
+                    // Quiz completato
+                    document.getElementById('congrats').classList.add('show');
+                }
+            } else {
+                // Risposta sbagliata
+                document.getElementById('errorModal').classList.add('show');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('errorModal').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
