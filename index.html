@@ -299,26 +299,6 @@
                 }
             }
 
-            /* Media query per mobile */
-            @media (max-width: 600px) {
-                h1 {
-                    font-size: 1.3em;
-                }
-
-                .congrats h1 {
-                    font-size: 1.5em;
-                }
-
-                .question {
-                    font-size: 1.1em;
-                }
-
-                .option-btn {
-                    font-size: 1em;
-                    padding: 12px 20px;
-                }
-            }
-
             audio {
                 width: 100%;
                 margin: 20px 0;
@@ -330,6 +310,39 @@
 
             .quiz-content.show {
                 display: block;
+            }
+
+            @media (max-width: 600px) {
+                body {
+                    font-size: 0.85em; /* Riduce tutto del 15% */
+                }
+
+                .code-screen h1 {
+                    font-size: 0.9em; /* era 1.2em */
+                    letter-spacing: 1px; /* era 3px */
+                }
+
+                h1 {
+                    font-size: 1.1em; /* era 1.3em */
+                }
+
+                .congrats h1 {
+                    font-size: 1.3em; /* era 1.5em */
+                    line-height: 1.3;
+                }
+
+                .question {
+                    font-size: 1em; /* era 1.1em */
+                }
+
+                .option-btn {
+                    font-size: 0.9em; /* era 1em */
+                    padding: 12px 15px;
+                }
+
+                .container {
+                    padding: 20px; /* era 40px */
+                }
             }
         </style>
     </head>
