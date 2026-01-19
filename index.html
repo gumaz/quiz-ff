@@ -333,6 +333,9 @@
                         <div class="progress-bar" id="progressBar"></div>
                     </div>
                 </div>
+                <audio id="loadingAudio" preload="auto">
+                    <source src="music/gameboy.mp3" type="audio/mpeg" />
+                </audio>
             </div>
 
             <!-- Quiz -->
@@ -490,7 +493,7 @@
                         viaggiando nel tempo...
                     </div>
                     <div class="image-container">
-                        <img src="images/FF5.jpg" alt="Final Fantasy V" />
+                        <img src="images/FF5.png" alt="Final Fantasy V" />
                     </div>
                     <div class="options">
                         <button
@@ -528,7 +531,7 @@
                     </div>
                     <audio id="audioPlayer" controls loop>
                         <source
-                            src="music/terras-theme.mp3"
+                            src="music/terras_theme.mp3"
                             type="audio/mpeg"
                         />
                         <source src="music/terras_theme.ogg" type="audio/ogg" />
@@ -628,28 +631,58 @@
                     }
                 });
 
-            // Animazione loading
+            // Animazione loading sincronizzata con audio
             function startLoading() {
                 const loadingScreen = document.getElementById("loadingScreen");
                 const progressBar = document.getElementById("progressBar");
+                const audio = document.getElementById("loadingAudio");
 
                 loadingScreen.classList.add("show");
 
+                // Riproduci audio
+                audio.play().catch((e) => console.log("Autoplay bloccato"));
+
+                // Sincronizza progress bar con durata audio (circa 5 secondi)
+                // Se l'audio ha metadati di durata, usa quella, altrimenti usa 5 secondi
+                audio.addEventListener("loadedmetadata", () => {
+                    const duration = audio.duration || 5;
+                    animateProgress(duration);
+                });
+
+                // Fallback se loadedmetadata non si attiva
+                setTimeout(() => {
+                    if (
+                        progressBar.style.width === "0%" ||
+                        !progressBar.style.width
+                    ) {
+                        animateProgress(5);
+                    }
+                }, 100);
+            }
+
+            function animateProgress(duration) {
+                const progressBar = document.getElementById("progressBar");
+                const steps = 60; // 60 step per animazione fluida
+                const interval = (duration * 1000) / steps;
+                const increment = 100 / steps;
+
                 let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 10;
-                    progressBar.style.width = progress + "%";
+                const progressInterval = setInterval(() => {
+                    progress += increment;
+                    progressBar.style.width = Math.min(progress, 100) + "%";
 
                     if (progress >= 100) {
-                        clearInterval(interval);
+                        clearInterval(progressInterval);
                         setTimeout(() => {
-                            loadingScreen.classList.remove("show");
+                            document
+                                .getElementById("loadingScreen")
+                                .classList.remove("show");
                             document
                                 .getElementById("quizContent")
                                 .classList.add("show");
                         }, 500);
                     }
-                }, 200);
+                }, interval);
             }
 
             function checkAnswer(questionNum, answer) {
